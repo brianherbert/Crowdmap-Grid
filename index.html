@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>Crowdmap Grid</title>
+
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/gridster.min.css">
+</head>
+<body>
+
+	<section class="demo">
+
+		<div class="gridster">
+			<ul>
+				<li data-row="1" data-col="1" data-sizex="2" data-sizey="1"></li>
+				<li data-row="3" data-col="1" data-sizex="1" data-sizey="1"></li>
+
+				<li data-row="3" data-col="2" data-sizex="2" data-sizey="1"></li>
+				<li data-row="1" data-col="2" data-sizex="2" data-sizey="2"></li>
+
+				<li class="try" data-row="1" data-col="4" data-sizex="1" data-sizey="1"></li>
+				<li data-row="2" data-col="4" data-sizex="2" data-sizey="1"></li>
+				<li data-row="3" data-col="4" data-sizex="1" data-sizey="1"></li>
+
+				<li data-row="1" data-col="5" data-sizex="1" data-sizey="1"></li>
+				<li data-row="3" data-col="5" data-sizex="1" data-sizey="1"></li>
+
+				<li data-row="1" data-col="6" data-sizex="1" data-sizey="1"></li>
+				<li data-row="2" data-col="6" data-sizex="1" data-sizey="2"></li>
+			</ul>
+		</div>
+
+	</section>
+
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/gridster.js" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		var gridster;
+		var images = [];
+		$(function(){
+
+			// Setup grid
+			gridster = $(".gridster > ul").gridster({
+				widget_margins: [10, 10],
+				widget_base_dimensions: [140, 140],
+				min_cols: 6
+			}).data('gridster');
+
+			// Grab Crowdmap Images
+			$.getJSON('media.php', function(data) {
+
+				// Build an images array
+				var i = 0;
+				$.each(data.media, function(key, img) {
+					images[i] = img.file_location+img.filename_l;
+					i++;
+				});
+
+				// Assign images to list elements
+				var i = 0;
+				$('li').each(function(index) {
+					if (images[i] === undefined)
+					{
+						// There is no image, assign a random color
+						$(this).css('background-color','#'+Math.floor(Math.random()*16777215).toString(16));
+					}else{
+						$(this).css('background-image','url('+images[i]+')');
+					}
+					i++;
+				});
+			});
+
+		});
+	</script>
+
+</body>
+</html>
